@@ -56,7 +56,7 @@ public abstract class SorterAbstractTest {
 
         this.getSorterWrapper().sort(passed);
 
-        // Assert that array in it's initial state an array that's been passed to a function are equal.
+        // Assert that array in it's initial state and array that's been passed to a function are equal.
         Assertions.assertArrayEquals(initial, passed);
     }
 

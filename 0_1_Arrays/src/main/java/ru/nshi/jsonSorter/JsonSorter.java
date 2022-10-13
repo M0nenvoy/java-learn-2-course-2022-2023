@@ -63,17 +63,12 @@ public class JsonSorter {
     /**
      *      Process the input json string with sorting instructions. Return the resulting json string.
      */
-    public String processJson(String jsonString) {
+    public String processJson(String jsonString) throws Exception {
         // Parse data from the jsonString to the java-object (SorterInstructions)
         ObjectMapper mapper = new ObjectMapper();
         SorterInstructions si = null;
 
-        try {
-            si = mapper.readValue(jsonString, SorterInstructions.class);
-        } catch (JsonProcessingException e) {
-            System.err.println("processJson() failed: " + e.getMessage());
-            System.exit(-1);
-        }
+        si = mapper.readValue(jsonString, SorterInstructions.class);
 
         if (si.values == null) {
             return "{ \"errorMessage\": \"Array is null\" }";
@@ -104,12 +99,7 @@ public class JsonSorter {
 
         // Write the json string result.
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        try {
-            mapper.writeValue(bout, new SorterResult(sorted, time));
-        } catch (Exception e) {
-            System.err.println("processJson failed: " + e.getMessage());
-            System.exit(-3);
-        }
+        mapper.writeValue(bout, new SorterResult(sorted, time));
 
         return bout.toString();
     }

@@ -98,9 +98,8 @@ public class JsonSorter {
         long time = timeAfterSort - timeBeforeSort;
 
         // Write the json string result.
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        mapper.writeValue(bout, new SorterResult(sorted, time));
+        String retval = mapper.writeValueAsString(new SorterResult(sorted, time));
 
-        return bout.toString();
+        return retval;
     }
 }

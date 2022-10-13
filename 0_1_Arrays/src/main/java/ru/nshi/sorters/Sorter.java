@@ -1,23 +1,13 @@
 package ru.nshi.sorters;
 
 /*
- *  Задание 1
- *  Создать интерфейс-сортировщик. Контракт интерфейса:
- *
- *  На вход поступает массив целых чисел
- *  Если на вход поступает null выбросить NullPointerException
- *
- *  Если на вход поступает пустой массив, то необходимо вернуть копию пустого массива
- *
- *  Поступивший массив не должен быть изменен
- *
- *  Сортировщик должен возвращать отсортированную копию массива.
+ *      Interface for the sorting algorithm
  */
 
 
 public interface Sorter {
     /**
-     *   @param source Массив, который необходимо отсортировать
+     *   @param source Array to be sorted
      */
     public void sort(int[] source) throws Exception;
 }

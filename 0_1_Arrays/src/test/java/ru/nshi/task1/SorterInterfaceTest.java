@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import ru.nshi.sorterWrapper.ISorterWrapper;
 import ru.nshi.sorterWrapper.SorterWrapper;
-import ru.nshi.sorters.DummySorter;
+import ru.nshi.sorters.BubbleSorter;
 
 public class SorterInterfaceTest {
 
@@ -25,13 +25,13 @@ public class SorterInterfaceTest {
     public ISorterWrapper isw;
 
     /**
-     *      Create the ISorterWrapper to use in tests. By default, it uses the DummySorter sorting implementation (which just throws upon trying to sort).
+     *      Create the ISorterWrapper to use in tests. By default, it uses the BubbleSorter sorting implementation (which just throws upon trying to sort).
      *      Though, it matters not, since things that we test in this test file are independent of the sorting implementation
      *      should be guaranteed by the SorterWrapper.
      */
     @BeforeEach
     public void setupISW() {
-        this.isw = new SorterWrapper(new DummySorter());
+        this.isw = new SorterWrapper(new BubbleSorter());
     }
 
     /*

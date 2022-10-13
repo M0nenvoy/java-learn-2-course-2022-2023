@@ -32,7 +32,7 @@ public class JsonSorterTest {
      *      with the json containing errorMessage: "Algorithm is not supported"
      */
     @Test
-    public void unsupportedAlgorithmTest() {
+    public void unsupportedAlgorithmTest() throws Exception {
         String json = " { \"algorithm\" : \"notThere\", \"values\": [ 1, 2, 3, 4 ] }";
         String result = jsorter.processJson(json);
 
@@ -45,7 +45,7 @@ public class JsonSorterTest {
      *      json containing: errorMessage: "Array is null"
      */
     @Test
-    public void nullArrayTest() {
+    public void nullArrayTest() throws Exception {
         String json = " { \"algorithm\" : \"bubble\", \"values\": null }";
         String result = jsorter.processJson(json);
 

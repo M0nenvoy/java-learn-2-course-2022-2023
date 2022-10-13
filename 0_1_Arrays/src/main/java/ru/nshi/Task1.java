@@ -12,7 +12,7 @@ import ru.nshi.sorters.MergeSorter;
  * Task1
  */
 public class Task1 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         HashMap<String, SorterWrapper> sorters = new HashMap<>();
         sorters.put("bubble",       new SorterWrapper(new BubbleSorter()));

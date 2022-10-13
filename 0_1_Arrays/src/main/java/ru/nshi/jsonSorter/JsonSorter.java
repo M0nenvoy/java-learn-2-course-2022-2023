@@ -1,10 +1,7 @@
 package ru.nshi.jsonSorter;
 
-import java.io.ByteArrayOutputStream;
-import java.time.LocalDate;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ru.nshi.sorterWrapper.SorterWrapper;
@@ -71,7 +68,7 @@ public class JsonSorter {
         si = mapper.readValue(jsonString, SorterInstructions.class);
 
         if (si.values == null) {
-            return "{ \"errorMessage\": \"Array is null\" }";
+            return mapper.writeValueAsString(new SorterError("Array is null"));
         }
 
         // The algorithm used for sorting.
@@ -79,7 +76,9 @@ public class JsonSorter {
 
         // Check, if we support this type of sorter.
         if (!sorters.keySet().contains(algorithm)) {
-            return String.format("{ \"errorMessage\": \"Algorithm is not supported (%s)\" }", algorithm);
+            return mapper.writeValueAsString(
+                new SorterError(String.format("Algorithm is not supported (%s)", algorithm))
+            );
         }
 
 
@@ -88,8 +87,9 @@ public class JsonSorter {
         try {
             sorted = sorters.get(algorithm).sort(si.values);
         } catch (Exception e) {
-            // Should we throw here or just return the json with an error?
-            return String.format("{ \"errorMessage\": \"Failed to sort an array: (%s)\" }", e.getMessage());
+            return mapper.writeValueAsString(
+                new SorterError(String.format("Failed to sort an array (%s)", algorithm))
+            );
         }
 
         long timeAfterSort = System.currentTimeMillis();

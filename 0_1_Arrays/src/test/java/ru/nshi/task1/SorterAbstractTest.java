@@ -26,9 +26,7 @@ public abstract class SorterAbstractTest {
     };
 
     // Should be overritten
-    protected SorterWrapper getSorterWrapper() {
-        return new SorterWrapper(new DummySorter());
-    }
+    abstract protected SorterWrapper getSorterWrapper();
 
      /*
       *     Upon getting an empty array as an argument we should return the copy of an empty array
@@ -77,8 +75,6 @@ public abstract class SorterAbstractTest {
      */
     @Test
     public void sortedTest() throws Exception {
-        if (this.getSorterWrapper().getSorter() instanceof DummySorter) return;
-
         for (int i = 0; i < ARRAYS_TO_SORT.length; i++) {
             int[] source = ARRAYS_TO_SORT[i];
             int[] sorted = this.getSorterWrapper().sort(source);

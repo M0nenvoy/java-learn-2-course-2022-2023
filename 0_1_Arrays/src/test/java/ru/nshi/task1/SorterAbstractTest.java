@@ -1,11 +1,14 @@
 package ru.nshi.task1;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import ru.nshi.Util;
 import ru.nshi.sorterWrapper.SorterWrapper;
-import ru.nshi.sorters.DummySorter;
 
 /**
  *      Lmao, let's use inheritance to write tests. We will create an abstract SorterTest (well, this one)
@@ -16,17 +19,16 @@ import ru.nshi.sorters.DummySorter;
  */
 
 public abstract class SorterAbstractTest {
-
-    protected final int[] ARRAY_TO_SORT = { 4, 2, 3, 5, 6, 12, 0, -1, 9 };
-    protected final int[] [] ARRAYS_TO_SORT = {
-        ARRAY_TO_SORT,
-        { 1, 2, 3, 4 },
-        { 1, 4, 3, 2 },
-        { 5, 4, 3, 2, 12, 8, 90, -10, 0, -10, 0, 0, 3 },
-    };
-
-    // Should be overritten
     abstract protected SorterWrapper getSorterWrapper();
+
+    // The array of arrays of integers to test our sorting capabilities on.
+    private static Stream<int[]> arraysToSortArgFactory() {
+        return Stream.of(
+            new int[] {1, 2, 3, 4},
+            new int[] {1, 4, 3, 2},
+            new int[] {5, 4, 3, 2, 12, 8, 90, -10, 0, -10, 0, 0, 3}
+        );
+    }
 
      /*
       *     Upon getting an empty array as an argument we should return the copy of an empty array
@@ -42,10 +44,11 @@ public abstract class SorterAbstractTest {
     /*
      *      An array passed should not be modified
      */
-    @Test
-    public void arrayNotModified() throws Exception {
+    @ParameterizedTest
+    @MethodSource("arraysToSortArgFactory")
+    public void arrayNotModified(int[] array) throws Exception {
         // Array in it's initial state
-        int[] initial = ARRAY_TO_SORT;
+        int[] initial = array;
 
         // Array after it's been passed to a function
         int[] passed = initial;
@@ -60,9 +63,10 @@ public abstract class SorterAbstractTest {
     /*
      *      Check if the sorted array and the array passed have the same length
      */
-    @Test
-    public void sizeConsistentTest() throws Exception {
-        int[] arrayPassed   = ARRAY_TO_SORT;
+    @ParameterizedTest
+    @MethodSource("arraysToSortArgFactory")
+    public void sizeConsistentTest(int[] array) throws Exception {
+        int[] arrayPassed   = array;
         int[] arrayReturned = this.getSorterWrapper().sort(arrayPassed);
 
         Assertions.assertTrue(arrayPassed.length == arrayReturned.length);
@@ -73,14 +77,13 @@ public abstract class SorterAbstractTest {
      *      An array passed should actually be sorted
      *
      */
-    @Test
-    public void sortedTest() throws Exception {
-        for (int i = 0; i < ARRAYS_TO_SORT.length; i++) {
-            int[] source = ARRAYS_TO_SORT[i];
-            int[] sorted = this.getSorterWrapper().sort(source);
+    @ParameterizedTest
+    @MethodSource("arraysToSortArgFactory")
+    public void sortedTest(int[] array) throws Exception {
+        int[] source = array;
+        int[] sorted = this.getSorterWrapper().sort(source);
 
-            Assertions.assertTrue(Util.isSorted(sorted));
-        }
+        Assertions.assertTrue(Util.isSorted(sorted));
 
     }
 }

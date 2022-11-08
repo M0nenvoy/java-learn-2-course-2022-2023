@@ -99,7 +99,6 @@ public class JsonSorter {
 
         return retval;
     }
-
     public int[] sort(int[] array, String algorithm) throws Exception {
 
         // Check, if we support this type of sorter.

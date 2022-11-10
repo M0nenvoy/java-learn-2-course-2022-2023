@@ -102,7 +102,7 @@ public class SorterServlet extends HttpServlet {
 
         this.mapper.writeValue(
             resp.getWriter(),
-            new BadContentTypeError(APPLICATION_JSON, "null")
+            error
         );
 
         // Not forgetting to set content type anymore

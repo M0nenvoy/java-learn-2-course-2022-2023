@@ -9,7 +9,7 @@ public abstract class ErrorSchema {
     public ErrorSchema() {
     }
 
-    public String getErrorMesssage() {
+    public String getErrorMessage() {
         return errorMessage;
     }
 }

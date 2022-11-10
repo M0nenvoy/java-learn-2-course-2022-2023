@@ -5,7 +5,7 @@ package ru.nshi.api.schemas;
  *  us null array for some reason (whatever shall I do).
  */
 
-public class NullArrayError extends Error {
+public class NullArrayError extends ErrorSchema {
     public NullArrayError() {
         this.errorMessage = "Array is null";
     }

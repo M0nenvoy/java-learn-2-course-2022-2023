@@ -1,12 +1,12 @@
 package ru.nshi.api.schemas;
 
-public abstract class Error {
+public abstract class ErrorSchema {
     protected String errorMessage;
 
     /*
      *  Empty ctor for json...ofication to work
      */
-    public Error() {
+    public ErrorSchema() {
     }
 
     public String getErrorMesssage() {

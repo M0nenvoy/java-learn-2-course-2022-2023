@@ -18,6 +18,7 @@ import ru.nshi.api.schemas.BadJson;
 import ru.nshi.api.schemas.NullArrayError;
 import ru.nshi.api.schemas.SortingRequest;
 import ru.nshi.api.schemas.SortingResponse;
+import ru.nshi.api.schemas.ErrorSchema;
 import ru.nshi.jsonSorter.AlgorithmNotSupportedException;
 import ru.nshi.jsonSorter.JsonSorter;
 import ru.nshi.sorterWrapper.SorterWrapper;
@@ -96,29 +97,33 @@ public class SorterServlet extends HttpServlet {
         );
     }
 
+    private void reportError(HttpServletResponse resp, ErrorSchema error, int status) throws DatabindException, IOException {
+        resp.setStatus(status);
+
+        this.mapper.writeValue(
+            resp.getWriter(),
+            new BadContentTypeError(APPLICATION_JSON, "null")
+        );
+
+        // Not forgetting to set content type anymore
+        resp.setContentType(APPLICATION_JSON);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         // Make sure that Content-Type is not null
         if (req.getContentType() == null) {
-            resp.setStatus(400);
-
-            this.mapper.writeValue(
-                resp.getWriter(),
-                new BadContentTypeError(APPLICATION_JSON, "null")
-            );
-
+            BadContentTypeError error = new BadContentTypeError(APPLICATION_JSON, "null");
+            reportError(resp, error, 400);
             return;
         }
 
         // The request should be of content type `application/json`
         if (!req.getContentType().contains(APPLICATION_JSON)) {
             // Content-Type is not supported
-            resp.setStatus(400);
-            this.mapper.writeValue(
-                resp.getWriter(),
-                new BadContentTypeError(APPLICATION_JSON, req.getContentType())
-            );
-
+            BadContentTypeError error = new BadContentTypeError(APPLICATION_JSON, req.getContentType());
+            reportError(resp, error, 400);
             return;
         }
 
@@ -131,23 +136,17 @@ public class SorterServlet extends HttpServlet {
             sortReq = this.mapper.readValue(inputString, SortingRequest.class);
         } catch (DatabindException e) {
             // Failed to databind
-            resp.setStatus(400);
-            this.mapper.writeValue(
-                resp.getWriter(),
-                new BadJson(inputString, SortingRequest.class.getSimpleName())
-            );
-
+            BadJson error = new BadJson(inputString, SortingRequest.class.getSimpleName());
+            reportError(resp, error, 400);
             return;
         }
 
         // Check if the array passed is null
         if (sortReq.getValues() == null) {
             // Should respond with error on null array
-            resp.setStatus(400);
-            this.mapper.writeValue(
-                resp.getWriter(),
-                new NullArrayError()
-            );
+            NullArrayError error = new NullArrayError();
+            reportError(resp, error, 400);
+            return;
         }
 
         // Everything is fine. Sort now
@@ -166,19 +165,17 @@ public class SorterServlet extends HttpServlet {
             sorted = this.jwrapper.sort(sortReq.getValues(), algorithm);
         } catch (AlgorithmNotSupportedException e) {
             // Unsopported algorithm
-            resp.setStatus(404);
-            this.mapper.writeValue(
-                resp.getWriter(),
-                new BadAlgorithm(algorithm)
-            );
-
+            BadAlgorithm error = new BadAlgorithm(algorithm);
+            reportError(resp, error, 400);
             return;
         } catch (Exception e) {
             // Oh, that's bad
             resp.setStatus(500);
+            resp.setContentType("text/plain");
             resp.getWriter().println("jwrapper.sort() failed");
             return;
         }
+
         long timeAfterSort = System.currentTimeMillis();
         int time = (int) (timeAfterSort - timeBeforeSort);
 

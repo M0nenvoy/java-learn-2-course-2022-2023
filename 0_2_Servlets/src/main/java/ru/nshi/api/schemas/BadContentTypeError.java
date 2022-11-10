@@ -5,7 +5,7 @@ package ru.nshi.api.schemas;
  *  requests a content type that we don't support
  */
 
-public class BadContentTypeError extends Error {
+public class BadContentTypeError extends ErrorSchema {
 
     /*
      *  For the debug purposes I think it would be nice

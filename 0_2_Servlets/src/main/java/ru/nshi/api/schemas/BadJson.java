@@ -8,7 +8,7 @@ package ru.nshi.api.schemas;
  *  In other words, a databind error
  */
 
-public class BadJson extends Error {
+public class BadJson extends ErrorSchema {
     /*
      *  It would be actually nice to find out what is the problem exactly.
      *  Is it that we got non-json string or the schema doesn't match.

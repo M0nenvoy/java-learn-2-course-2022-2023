@@ -98,6 +98,18 @@ public class SorterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Make sure that Content-Type is not null
+        if (req.getContentType() == null) {
+            resp.setStatus(400);
+
+            this.mapper.writeValue(
+                resp.getWriter(),
+                new BadContentTypeError(APPLICATION_JSON, "null")
+            );
+
+            return;
+        }
+
         // The request should be of content type `application/json`
         if (!req.getContentType().contains(APPLICATION_JSON)) {
             // Content-Type is not supported

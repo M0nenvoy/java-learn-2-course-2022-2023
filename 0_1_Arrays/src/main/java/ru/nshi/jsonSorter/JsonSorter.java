@@ -74,18 +74,15 @@ public class JsonSorter {
         // The algorithm used for sorting.
         String algorithm = si.algorithm;
 
-        // Check, if we support this type of sorter.
-        if (!sorters.keySet().contains(algorithm)) {
-            return mapper.writeValueAsString(
-                new SorterError(String.format("Algorithm is not supported (%s)", algorithm))
-            );
-        }
-
-
         long timeBeforeSort = System.currentTimeMillis();
         int[] sorted;
         try {
-            sorted = sorters.get(algorithm).sort(si.values);
+            sorted = sort(si.values, algorithm);
+        } catch (AlgorithmNotSupportedException e) {
+            // Check, if we support this type of sorter.
+            return mapper.writeValueAsString(
+                new SorterError(String.format("Algorithm is not supported (%s)", algorithm))
+            );
         } catch (Exception e) {
             return mapper.writeValueAsString(
                 new SorterError(String.format("Failed to sort an array (%s)", algorithm))
@@ -101,5 +98,18 @@ public class JsonSorter {
         String retval = mapper.writeValueAsString(new SorterResult(sorted, time));
 
         return retval;
+    }
+    public int[] sort(int[] array, String algorithm) throws Exception {
+
+        // Check, if we support this type of sorter.
+        if (!sorters.keySet().contains(algorithm)) {
+            throw new AlgorithmNotSupportedException(
+                String.format("Algorithm (%s) is not supported", algorithm)
+            );
+        }
+        int[] sorted;
+        sorted = sorters.get(algorithm).sort(array);
+
+        return sorted;
     }
 }

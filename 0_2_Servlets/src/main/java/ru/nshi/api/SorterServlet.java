@@ -166,7 +166,7 @@ public class SorterServlet extends HttpServlet {
         } catch (AlgorithmNotSupportedException e) {
             // Unsopported algorithm
             BadAlgorithm error = new BadAlgorithm(algorithm);
-            reportError(resp, error, 400);
+            reportError(resp, error, 404);
             return;
         } catch (Exception e) {
             // Oh, that's bad

@@ -100,13 +100,14 @@ public class SorterServlet extends HttpServlet {
     private void reportError(HttpServletResponse resp, ErrorSchema error, int status) throws DatabindException, IOException {
         resp.setStatus(status);
 
+        // Not forgetting to set content type anymore
+        resp.setContentType(APPLICATION_JSON);
+
         this.mapper.writeValue(
             resp.getWriter(),
             error
         );
 
-        // Not forgetting to set content type anymore
-        resp.setContentType(APPLICATION_JSON);
     }
 
     @Override

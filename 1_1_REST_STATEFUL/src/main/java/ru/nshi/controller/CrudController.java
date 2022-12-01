@@ -2,6 +2,7 @@ package ru.nshi.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -92,7 +93,7 @@ public class CrudController {
 
 		List<Integer> idList = Arrays.stream(ids)
 			.mapToObj(Integer::valueOf)
-			.toList();
+			.collect(Collectors.toList());
 
 		songsService.listenSongs(idList, n);
 		return songsService.getSongsByIds(idList);

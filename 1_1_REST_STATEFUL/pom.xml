@@ -12,8 +12,8 @@
     </parent>
 
     <artifactId>spring-learn</artifactId>
-    <name>Spring learn</name>
-    <description>Spring learn</description>
+    <name>1_1_REST_STATEFUL</name>
+    <description>Service for listening to songs</description>
 
     <dependencies>
         <dependency>

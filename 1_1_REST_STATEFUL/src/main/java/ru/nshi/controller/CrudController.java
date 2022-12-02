@@ -67,13 +67,8 @@ public class CrudController {
 	}
 
 	@RequestMapping(value = "/listen", method=RequestMethod.GET)
-	public SongModel[] getSortedSongsByAuditions(@RequestParam(value ="limit", required = false) Integer limit)
+	public SongModel[] getSortedSongsByAuditions(@RequestParam(defaultValue = "5") int limit)
 	{
-		/* Можно бы было использовать defaultValue вместо этого. Но он принимает строки :( */
-		if (limit == null) {
-			limit = Integer.MAX_VALUE;
-		}
-
 		if (limit < 1) {
 			throw new SongException(
 				String.format("Limit less than 1 is invalid (%d)", limit),

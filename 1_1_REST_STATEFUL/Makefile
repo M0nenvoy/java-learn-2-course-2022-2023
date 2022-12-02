@@ -15,6 +15,16 @@ post:
 	-H "content-type: application/json" \
 	-d '{"name": "Sample name", "artistName": "Sample artist", "auditions": 0}'
 
+post-name-empty:
+	curl $(ROUTE) $(FLAGS) -XPOST \
+	-H "content-type: application/json" \
+	-d '{"name": "", "artistName": "", "auditions": 0}'
+
+post-auditions-null:
+	curl $(ROUTE) $(FLAGS) -XPOST \
+	-H "content-type: application/json" \
+	-d '{"name": "Sample name", "artistName": "Sample artist", "auditions": null}'
+
 update:
 	curl $(ROUTE)/1 $(FLAGS) -XPUT \
 	-H "content-type: application/json" \

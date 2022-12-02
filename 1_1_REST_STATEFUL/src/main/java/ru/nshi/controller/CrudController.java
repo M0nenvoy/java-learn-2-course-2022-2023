@@ -31,6 +31,25 @@ public class CrudController {
 	@Autowired
 	SongsService songsService;
 
+	private boolean validateSong(SongPostModel song)
+	{
+		return (
+			song.getName()       !=  null    &&
+			song.getArtistName() !=  null    &&
+			!song.getArtistName().isEmpty()  &&
+			!song.getName().isEmpty()        &&
+			song.getAuditions()   >  -1
+		);
+	}
+
+	private void assertValid(SongPostModel song)
+	{
+		if (validateSong(song)) {
+			return;
+		}
+		throw new SongException("SongPostModel is invalid", HttpStatus.BAD_REQUEST);
+	}
+
 	@GetMapping
 	public SongModel[] getSongs()
 	{
@@ -40,6 +59,7 @@ public class CrudController {
 	@PostMapping
 	public SongModel createSong(@RequestBody SongPostModel post)
 	{
+		assertValid(post);
 		SongModel song = songsService.createSong(post);
 		return song;
 	}
@@ -55,6 +75,7 @@ public class CrudController {
 	public SongModel updateSongById(@PathVariable int id,
 	                                @RequestBody  SongPostModel post)
 	{
+		assertValid(post);
 		SongModel song = songsService.updateSongById(id, post);
 		return song;
 	}

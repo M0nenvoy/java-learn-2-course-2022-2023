@@ -23,23 +23,6 @@ public class SongsServiceImpl implements SongsService {
 	private ConcurrentHashMap<Integer, SongModel> songsMap = new ConcurrentHashMap<>();
 	private AtomicInteger                         autoId   = new AtomicInteger(0);
 
-	private boolean validateSong(SongPostModel song)
-	{
-		return (
-			song.getName()       !=  null &&
-			song.getArtistName() !=  null &&
-			song.getAuditions()   >  -1
-		);
-	}
-
-	private void assertValid(SongPostModel song)
-	{
-		if (validateSong(song)) {
-			return;
-		}
-		throw new SongException("SongPostModel is invalid", HttpStatus.BAD_REQUEST);
-	}
-
 	@Override
 	public SongModel[] getSongs()
 	{
@@ -50,7 +33,6 @@ public class SongsServiceImpl implements SongsService {
 	@Override
 	public SongModel createSong(SongPostModel post)
 	{
-		assertValid(post);
 		int id           = autoId.incrementAndGet();
 		SongModel retval = new SongModel(id, post);
 		songsMap.put(id, retval);
@@ -124,7 +106,6 @@ public class SongsServiceImpl implements SongsService {
 	public SongModel updateSongById(int id, SongPostModel post)
 	{
 		getSongById(id); // Убедимся в существовании песни с таким id
-		assertValid(post);
 
 		SongModel update = new SongModel(id, post);
 		songsMap.put(id, update);

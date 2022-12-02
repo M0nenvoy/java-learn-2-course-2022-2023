@@ -70,7 +70,7 @@ public class SongsServiceImpl implements SongsService {
 		*/
 		return songsMap.values()
 			.stream()
-			.sorted(Comparator.comparingInt(SongModel::getAuditions))
+			.sorted(Comparator.comparingInt(SongModel::getAuditions).reversed())
 			.limit(limit)
 			.toArray(SongModel[]::new);
 	}

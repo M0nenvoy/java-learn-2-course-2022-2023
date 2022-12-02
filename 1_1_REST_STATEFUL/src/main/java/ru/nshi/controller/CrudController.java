@@ -36,9 +36,9 @@ public class CrudController {
 		return (
 			song.getName()       !=  null    &&
 			song.getArtistName() !=  null    &&
+			song.getAuditions()  >  -1       &&
 			!song.getArtistName().isEmpty()  &&
-			!song.getName().isEmpty()        &&
-			song.getAuditions()   >  -1
+			!song.getName().isEmpty()
 		);
 	}
 
